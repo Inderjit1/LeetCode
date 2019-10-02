@@ -3,23 +3,33 @@ class TreeNode(object):
         self.val = x
         self.left = None
         self.right = None
+        self.numberOfCoins = None
 
 class Solution(object):
+    trackingNodesWithCoins = {}
     def distributeCoins(self, root):
-        pass
+        self.findNodeWithMaxCoins(root)
 
+    def findNodeWithMaxCoins(self, root):
+        if root is None:
+            return
 
+        if root.numberOfCoins == 0:
+            self.trackingNodesWithCoins[root.val] = 0
+        else:
+            self.trackingNodesWithCoins[root.val] = root.numberOfCoins
+        if root.left is not None:
+            self.findNodeWithMaxCoins(root.left)
+        if root.rigth is not None:
+            self.findNodeWithMaxCoins(root.left)
 test = Solution()
-first = TreeNode(1)
-second = TreeNode(0)
-third = TreeNode(0)
-fourth = TreeNode(3)
-
-first.left = second
-second.right = fourth
-first.right = third
+first, second, third, fourth = TreeNode(1), TreeNode(0), TreeNode(0), TreeNode(3)
+fourth.numberOfCoins = 4
+first.left, second.right, first.right = second, fourth, third
+test.distributeCoins(first)
 #         1
 #     /       \
 #    0         0
 #      \
 #       3
+
